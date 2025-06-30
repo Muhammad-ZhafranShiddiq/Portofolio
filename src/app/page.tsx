@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Moon, Sun, Mail, Linkedin, Github, Instagram, ExternalLink, Download, MapPin, Calendar, Code, Award } from 'lucide-react';
+import { Moon, Sun, Mail, Linkedin, Github, Instagram, ExternalLink, Download, Calendar, Award } from 'lucide-react';
 
 const Portfolio = () => {
   const [darkMode, setDarkMode] = useState(true);
