@@ -386,7 +386,7 @@ const experiences = [
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-8">Contact Me</h2>
           <p className="text-lg mb-8 text-gray-600 dark:text-gray-400">
-            Interested in working together or have questions? Let's connect!
+            Interested in working together or have questions? Let&rsquo;s connect!
           </p>
           
           <div className="flex flex-wrap justify-center gap-6">
