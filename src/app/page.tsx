@@ -54,7 +54,8 @@ const Portfolio = () => {
 
 const experiences = [
   {
-    logo: '🏢',
+    logo: '/Logo/1_TEDx.png',
+    alt : 'TEDxPadjadjaran University logo',
     company: 'TEDxPadjadjaran University',
     position: 'Manager of Website',
     duration: 'Feb 2025 - July 2025',
@@ -65,7 +66,8 @@ const experiences = [
     ]
   },
   {
-    logo: '🚀',
+    logo: '/Logo/2_PCE.jpeg',
+    alt : 'Padjadjaran Career Expo logo',
     company: 'Padjadjaran Career Expo',
     position: 'Manager of Information Technology',
     duration: 'Jul 2024 - Nov 2024',
@@ -76,7 +78,8 @@ const experiences = [
     ]
   },
   {
-    logo: '💼',
+    logo: '/Logo/3_IFFD.jpg',
+    alt : 'Informatics Fun Day logo',
     company: 'Informatics Fun Day',
     position: 'Project Officer',
     duration: 'Sep 2024 - Nov 2024',
@@ -88,7 +91,8 @@ const experiences = [
     ]
   },
   {
-    logo: '💼',
+    logo: '/Logo/4_bem_kema_unpad_logo.jpeg',
+    alt : 'BEM Kema Unpad logo',
     company: 'BEM Kema Unpad',
     position: 'Staff of the Data Research and Analysis Bureau',
     duration: 'Mar 2024 - Dec 2024',
@@ -102,25 +106,20 @@ const experiences = [
 
   const projects = [
     {
-      title: 'E-Commerce Platform',
-      description: 'Platform e-commerce lengkap dengan sistem pembayaran, manajemen inventory, dan dashboard admin.',
-      image: '🛒',
-      techStack: ['React', 'Node.js', 'MongoDB', 'Stripe API'],
-      link: '#'
+      title: 'TEDxPadjadjaran University Website',
+      description: 'Served as PM and Backend Developer for the TEDxPadjadjaran University website built with Next.js, Prisma ORM, and MongoDB, featuring authentication, admin page, landing page, about, event registration, event details, partnership and sponsorship page.',
+      image: '/project/1_TEDx.png',
+      alt : 'TEDxPadjadjaran University Portolio',
+      techStack: ['React', 'Next.js', 'MongoDB', 'Prisma ORM', 'TypeScript', 'Tailwind CSS'],
+      link: 'https://tedxpadjadjaranuniversity.com/'
     },
     {
-      title: 'Task Management App',
-      description: 'Aplikasi manajemen tugas dengan fitur real-time collaboration dan notification system.',
-      image: '📝',
+      title: 'Padjadjaran Career Expo',
+      description: ' Developed the Padjadjaran Career Expo website using Next.js and MongoDB, featuring a landing page, admin page,about section, event registration, event details, articles, and contact form',
+      image: '/project/2_PCE.png',
+      alt : 'Padjadjaran Career Expo Portolio',
       techStack: ['Next.js', 'TypeScript', 'Socket.io', 'PostgreSQL'],
-      link: '#'
-    },
-    {
-      title: 'Weather Forecast App',
-      description: 'Aplikasi cuaca dengan prediksi 7 hari, geolocation, dan visualisasi data interaktif.',
-      image: '🌤️',
-      techStack: ['React', 'Chart.js', 'Weather API', 'Tailwind CSS'],
-      link: '#'
+      link: 'https://www.padjadjarancareerexpo.id/'
     }
   ];
 
@@ -273,7 +272,15 @@ const experiences = [
                   : 'bg-white border-gray-200 hover:border-blue-300'
               }`}>
                 <div className="flex items-start gap-4">
-                  <div className="text-3xl">{exp.logo}</div>
+                  <div className="text-3xl">
+                  <Image
+                    src={exp.logo}
+                    alt={exp.company + ' logo'}
+                    width={48}
+                    height={48}
+                    className="rounded-full object-cover w-12 h-12"
+                  />
+                  </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-bold mb-1">{exp.position}</h3>
                     <p className="text-blue-600 dark:text-blue-400 font-medium mb-2">{exp.company}</p>
@@ -312,7 +319,14 @@ const experiences = [
                 <div className={`h-48 flex items-center justify-center text-6xl ${
                   darkMode ? 'bg-slate-700' : 'bg-gray-100'
                 }`}>
-                  {project.image}
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={project.image}
+                      alt={project.title + ' image'}
+                      fill
+                      className="object-contain w-full h-full"
+                    />
+                  </div>
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-bold mb-2">{project.title}</h3>
@@ -328,7 +342,7 @@ const experiences = [
                       </span>
                     ))}
                   </div>
-                  <a href={project.link} className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline">
+                  <a href={project.link} target="_blank" className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline">
                     <ExternalLink size={16} />
                     View Project
                   </a>
@@ -372,11 +386,11 @@ const experiences = [
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-8">Contact Me</h2>
           <p className="text-lg mb-8 text-gray-600 dark:text-gray-400">
-            Tertarik untuk bekerjasama atau memiliki pertanyaan? Mari terhubung!
+            Interested in working together or have questions? Let's connect!
           </p>
           
           <div className="flex flex-wrap justify-center gap-6">
-            <a href="mailto:john.doe@email.com" className={`flex items-center gap-3 px-6 py-3 rounded-lg transition-all duration-200 hover:scale-105 ${
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=m.zhafran.s17@gmail.com" target="_blank" className={`flex items-center gap-3 px-6 py-3 rounded-lg transition-all duration-200 hover:scale-105 ${
               darkMode 
                 ? 'bg-slate-800 border border-slate-700 hover:border-blue-500' 
                 : 'bg-white border border-gray-200 hover:border-blue-300'
@@ -385,7 +399,7 @@ const experiences = [
               <span>Email</span>
             </a>
             
-            <a href="#" className={`flex items-center gap-3 px-6 py-3 rounded-lg transition-all duration-200 hover:scale-105 ${
+            <a href="https://linkedin.com/in/mzhafrans" target="_blank" className={`flex items-center gap-3 px-6 py-3 rounded-lg transition-all duration-200 hover:scale-105 ${
               darkMode 
                 ? 'bg-slate-800 border border-slate-700 hover:border-blue-500' 
                 : 'bg-white border border-gray-200 hover:border-blue-300'
@@ -394,7 +408,7 @@ const experiences = [
               <span>LinkedIn</span>
             </a>
             
-            <a href="#" className={`flex items-center gap-3 px-6 py-3 rounded-lg transition-all duration-200 hover:scale-105 ${
+            <a href="https://www.instagram.com/_zhafrans/" target="_blank" className={`flex items-center gap-3 px-6 py-3 rounded-lg transition-all duration-200 hover:scale-105 ${
               darkMode 
                 ? 'bg-slate-800 border border-slate-700 hover:border-blue-500' 
                 : 'bg-white border border-gray-200 hover:border-blue-300'
@@ -403,7 +417,7 @@ const experiences = [
               <span>Instagram</span>
             </a>
             
-            <a href="#" className={`flex items-center gap-3 px-6 py-3 rounded-lg transition-all duration-200 hover:scale-105 ${
+            <a href="https://github.com/Muhammad-ZhafranShiddiq" target="_blank" className={`flex items-center gap-3 px-6 py-3 rounded-lg transition-all duration-200 hover:scale-105 ${
               darkMode 
                 ? 'bg-slate-800 border border-slate-700 hover:border-blue-500' 
                 : 'bg-white border border-gray-200 hover:border-blue-300'
