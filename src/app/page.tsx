@@ -110,7 +110,7 @@ const experiences = [
       description: 'Served as PM and Backend Developer for the TEDxPadjadjaran University website built with Next.js, Prisma ORM, and MongoDB, featuring authentication, admin page, landing page, about, event registration, event details, partnership and sponsorship page.',
       image: '/project/1_TEDx.png',
       alt : 'TEDxPadjadjaran University Portolio',
-      techStack: ['React', 'Next.js', 'MongoDB', 'Prisma ORM', 'TypeScript', 'Tailwind CSS'],
+      techStack: ['React', 'Next.js', 'MongoDB', 'Vercel', 'Google API', 'Nodemailer', 'Prisma ORM', 'TypeScript', 'Tailwind CSS'],
       link: 'https://tedxpadjadjaranuniversity.com/'
     },
     {
@@ -118,26 +118,32 @@ const experiences = [
       description: ' Developed the Padjadjaran Career Expo website using Next.js and MongoDB, featuring a landing page, admin page,about section, event registration, event details, articles, and contact form',
       image: '/project/2_PCE.png',
       alt : 'Padjadjaran Career Expo Portolio',
-      techStack: ['Next.js', 'TypeScript', 'Socket.io', 'PostgreSQL'],
+      techStack: ['React', 'Next.js', 'MongoDB', 'TypeScript', 'Tailwind CSS'],
       link: 'https://www.padjadjarancareerexpo.id/'
+    },
+      {
+      title: 'Byteforge',
+      description: 'Developed backend architecture for ByteForge e-learning platform using Next.js, TypeScript, Prisma ORM, and MongoDB. Built comprehensive authentication APIs (sign up/in, Google OAuth, password recovery, email verification), user management system, certificate generation, SMTP email services, OpenRouter.AI chatbot integration, and handled frontend API integration with debugging support.',
+      image: '/project/3_Byteforge.png',
+      alt : 'Byteforge Portolio',
+      techStack: ['React', 'Next.js', 'MongoDB', 'Vercel', 'Google API', 'Nodemailer', 'Prisma ORM', 'TypeScript', 'Tailwind CSS'],
+      link: ''
+    },
+    {
+      title: 'Unpad Explorer - Prabu 2025 (On Progress)',
+      description: 'Led the development of an interactive map website for Universitas Padjadjaran orientation, enabling students to explore campus locations through educational content and quizzes. As Project Manager, I led a 5-person team using Agile and Scrum methodologies, managed timelines with Trello, and ensured on-time delivery. As Backend Developer, I built scalable features using Next.js, TypeScript, PostgreSQL, Prisma ORM, and Redis to support 2,000+ concurrent users. I developed a real-time leaderboard showing top users and groups, and integrated Google Sheets for easy content updates. Key pages include a landing page, interactive map with user progress tracking, and a leaderboard.',
+      image: '/project/4_Prabu.png',
+      alt : 'Byteforge Portolio',
+      techStack: ['React', 'Next.js', 'PostgresSQL', 'Prisma ORM', 'TypeScript', 'Tailwind CSS', 'Redis', 'Google Sheets API'],
+      link: ''
     }
   ];
 
   const certifications = [
     {
-      title: 'AWS Certified Solutions Architect',
-      description: 'Sertifikasi arsitektur cloud computing dari Amazon Web Services',
-      link: '#'
-    },
-    {
-      title: 'Google Cloud Professional Developer',
-      description: 'Sertifikasi pengembangan aplikasi di Google Cloud Platform',
-      link: '#'
-    },
-    {
-      title: 'Meta Frontend Developer Professional',
-      description: 'Program sertifikasi pengembangan frontend dari Meta (Facebook)',
-      link: '#'
+      title: 'Machine Learning Certificatin - Bangkit Academy led by Google, Tokopedia, Gojek, & Traveloka',
+      description: 'Completed the Kampus Merdeka Independent Study Program at Bangkit Academy, specializing in Machine Learning. Earned over 21 certifications and 2 specializations to deepen technical expertise. Collaborated with a 7-member team to develop FreshFind, a Smart Agri-Fishery Marketplace designed to optimize agricultural and fishery supply chains. Actively participated in various activities, including guest speaker sessions and Instructor-Led Training (ILT), to enhance both technical and interpersonal skills.',
+      link: 'https://drive.google.com/drive/folders/1gU2yXs_2Zb7YQZEaMQefyfpPIg1Rl-CW?usp=sharing'
     }
   ];
 
