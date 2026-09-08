@@ -1,0 +1,305 @@
+import type {
+  Certification,
+  Experience,
+  PortfolioData,
+  Profile,
+  Project,
+  Skill,
+} from "@/lib/portfolio/types";
+
+const fallbackTimestamp = "2025-07-25T00:00:00.000Z";
+
+export const defaultProfile: Profile = {
+  id: "profile",
+  name: "Muhammad Zhafran Shiddiq",
+  eyebrow: "Project manager · Data analyst · Full-stack developer",
+  headline: "I turn complex ideas and data into dependable digital products.",
+  biography:
+    "I am an Informatics Engineering student with a 3.92 GPA who leads cross-functional teams, builds web products, and translates complex data into decisions people can act on.",
+  availability: "Open to project management, data, and product opportunities",
+  location: "Bandung, Indonesia",
+  email: "m.zhafran.s17@gmail.com",
+  resumeUrl:
+    "https://drive.google.com/file/d/1CYHAd_wOgN9cUcM4XFtoYb5ek5QwhTLs/view?usp=sharing",
+  portrait: {
+    url: "/dokumentasi/zhafran.png",
+    publicId: "",
+    alt: "Portrait of Muhammad Zhafran Shiddiq",
+    width: 3024,
+    height: 4032,
+    format: "png",
+    bytes: 6673668,
+  },
+  socials: {
+    linkedin: "https://www.linkedin.com/in/mzhafrans/",
+    github: "https://github.com/Muhammad-ZhafranShiddiq",
+    instagram: "https://www.instagram.com/_zhafrans/",
+  },
+  metrics: [
+    { value: "3.92", label: "GPA" },
+    { value: "9", label: "People led" },
+    { value: "1,100+", label: "Launch visitors" },
+  ],
+  seo: {
+    title: "Muhammad Zhafran Shiddiq — Portfolio",
+    description:
+      "Project manager, data analyst, and full-stack developer building reliable digital products and turning data into clear decisions.",
+  },
+  updatedAt: fallbackTimestamp,
+};
+
+export const defaultExperiences: Experience[] = [
+  {
+    id: "experience-tedx",
+    organization: "TEDxPadjadjaran University",
+    role: "Manager of Website",
+    location: "Bandung, Indonesia",
+    startDate: "2025-02",
+    endDate: "2025-07",
+    isCurrent: false,
+    logo: {
+      url: "/Logo/1_TEDx.png",
+      publicId: "",
+      alt: "TEDxPadjadjaran University logo",
+      width: 1747,
+      height: 1747,
+    },
+    highlights: [
+      "Led a nine-person technical team across frontend, backend, and UI/UX to deliver a production Next.js platform within one month.",
+      "Reached 1,100+ visitors, 4,788 page views, and 200+ registrations in the first 20 days after launch.",
+      "Coordinated weekly agile sprints, stakeholder alignment, code reviews, and a Git workflow spanning more than 233 commits.",
+    ],
+    status: "published",
+    displayOrder: 1,
+    createdAt: fallbackTimestamp,
+    updatedAt: fallbackTimestamp,
+  },
+  {
+    id: "experience-pce",
+    organization: "Padjadjaran Career Expo",
+    role: "Manager of Information Technology",
+    location: "Bandung, Indonesia",
+    startDate: "2024-07",
+    endDate: "2024-11",
+    isCurrent: false,
+    logo: {
+      url: "/Logo/2_PCE.jpeg",
+      publicId: "",
+      alt: "Padjadjaran Career Expo logo",
+      width: 200,
+      height: 200,
+    },
+    highlights: [
+      "Led a seven-person IT team across UI/UX, backend, and frontend delivery using weekly agile sprints.",
+      "Translated cross-divisional requirements into a practical delivery plan with clear ownership and milestones.",
+      "Oversaw the full Next.js product lifecycle and launched a career expo platform that generated 220+ registrations.",
+    ],
+    status: "published",
+    displayOrder: 2,
+    createdAt: fallbackTimestamp,
+    updatedAt: fallbackTimestamp,
+  },
+  {
+    id: "experience-iffd",
+    organization: "Informatics Fun Day",
+    role: "Project Officer",
+    location: "Bandung, Indonesia",
+    startDate: "2024-09",
+    endDate: "2024-11",
+    isCurrent: false,
+    logo: {
+      url: "/Logo/3_IFFD.jpg",
+      publicId: "",
+      alt: "Informatics Fun Day logo",
+      width: 808,
+      height: 782,
+    },
+    highlights: [
+      "Directed more than 80 committee members, aligning roles, schedules, and delivery goals across the organization.",
+      "Designed the recruitment system and developed the event concept from initial planning through execution.",
+      "Welcomed 130+ participants and delivered IDR 2.8 million in net profit—the event's strongest result in several years.",
+    ],
+    status: "published",
+    displayOrder: 3,
+    createdAt: fallbackTimestamp,
+    updatedAt: fallbackTimestamp,
+  },
+  {
+    id: "experience-bem",
+    organization: "BEM Kema Unpad",
+    role: "Data Research and Analysis Staff",
+    location: "Bandung, Indonesia",
+    startDate: "2024-03",
+    endDate: "2024-12",
+    isCurrent: false,
+    logo: {
+      url: "/Logo/4_bem_kema_unpad_logo.jpeg",
+      publicId: "",
+      alt: "BEM Kema Unpad logo",
+      width: 200,
+      height: 200,
+    },
+    highlights: [
+      "Supported both the Analysis division and the Satu Data Padjadjaran student information platform.",
+      "Analyzed thousands of responses across mandatory and needs-based surveys for 16 BEM bureaus and departments.",
+    ],
+    status: "published",
+    displayOrder: 4,
+    createdAt: fallbackTimestamp,
+    updatedAt: fallbackTimestamp,
+  },
+];
+
+export const defaultProjects: Project[] = [
+  {
+    id: "project-tedx",
+    title: "TEDxPadjadjaran University",
+    role: "Project manager & backend developer",
+    summary: "A production event platform that turned a one-month build into measurable audience growth.",
+    description:
+      "Led product delivery and backend development for authentication, event registration, partnership content, and the admin workflow.",
+    image: {
+      url: "/project/1_TEDx.png",
+      publicId: "",
+      alt: "TEDxPadjadjaran University website home page",
+      width: 1919,
+      height: 913,
+    },
+    technologies: ["Next.js", "TypeScript", "MongoDB", "Prisma", "Tailwind CSS"],
+    liveUrl: "https://tedxpadjadjaranuniversity.com/",
+    repositoryUrl: "",
+    projectState: "live",
+    featured: true,
+    status: "published",
+    displayOrder: 1,
+    createdAt: fallbackTimestamp,
+    updatedAt: fallbackTimestamp,
+  },
+  {
+    id: "project-pce",
+    title: "Padjadjaran Career Expo",
+    role: "Project manager",
+    summary: "A career expo platform that streamlined event information and registration for 220+ participants.",
+    description:
+      "Coordinated design and engineering for the landing page, event registration, event details, articles, contact flow, and admin experience.",
+    image: {
+      url: "/project/2_PCE.png",
+      publicId: "",
+      alt: "Padjadjaran Career Expo website home page",
+      width: 1917,
+      height: 915,
+    },
+    technologies: ["Next.js", "TypeScript", "MongoDB", "Tailwind CSS"],
+    liveUrl: "https://www.padjadjarancareerexpo.id/",
+    repositoryUrl: "",
+    projectState: "live",
+    featured: false,
+    status: "published",
+    displayOrder: 2,
+    createdAt: fallbackTimestamp,
+    updatedAt: fallbackTimestamp,
+  },
+  {
+    id: "project-byteforge",
+    title: "ByteForge",
+    role: "Backend developer",
+    summary: "An e-learning backend covering identity, certificates, email delivery, and an AI learning assistant.",
+    description:
+      "Built authentication APIs, user management, password recovery, email verification, certificate generation, SMTP services, and an OpenRouter-powered chatbot.",
+    image: {
+      url: "/project/3_Byteforge.png",
+      publicId: "",
+      alt: "ByteForge e-learning platform interface",
+      width: 1440,
+      height: 833,
+    },
+    technologies: ["Next.js", "TypeScript", "MongoDB", "Prisma", "OpenRouter"],
+    liveUrl: "",
+    repositoryUrl: "",
+    projectState: "private",
+    featured: false,
+    status: "published",
+    displayOrder: 3,
+    createdAt: fallbackTimestamp,
+    updatedAt: fallbackTimestamp,
+  },
+  {
+    id: "project-prabu",
+    title: "Unpad Explorer — Prabu 2025",
+    role: "Project manager & backend developer",
+    summary: "An interactive campus exploration experience designed to support 2,000+ concurrent users.",
+    description:
+      "Led a five-person agile team and built progress tracking, quizzes, a real-time leaderboard, Redis-backed services, and Google Sheets content integration.",
+    image: {
+      url: "/project/4_Prabu.png",
+      publicId: "",
+      alt: "Unpad Explorer interactive campus experience",
+      width: 1440,
+      height: 1080,
+    },
+    technologies: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Redis"],
+    liveUrl: "",
+    repositoryUrl: "",
+    projectState: "in-progress",
+    featured: false,
+    status: "published",
+    displayOrder: 4,
+    createdAt: fallbackTimestamp,
+    updatedAt: fallbackTimestamp,
+  },
+];
+
+export const defaultCertifications: Certification[] = [
+  {
+    id: "certification-bangkit",
+    title: "Machine Learning Path",
+    issuer: "Bangkit Academy led by Google, Tokopedia, Gojek & Traveloka",
+    issueDate: "2024-01",
+    expiryDate: "",
+    credentialId: "",
+    credentialUrl:
+      "https://drive.google.com/drive/folders/1gU2yXs_2Zb7YQZEaMQefyfpPIg1Rl-CW?usp=sharing",
+    description:
+      "Completed 21+ certifications and two specializations, then collaborated in a seven-person capstone team to build FreshFind, a smart agri-fishery marketplace.",
+    image: { url: "", publicId: "", alt: "" },
+    status: "published",
+    displayOrder: 1,
+    createdAt: fallbackTimestamp,
+    updatedAt: fallbackTimestamp,
+  },
+];
+
+const skillNames: Array<Pick<Skill, "name" | "category" | "color">> = [
+  { name: "Project Management", category: "Leadership & Delivery", color: "#335cff" },
+  { name: "Agile & Scrum", category: "Leadership & Delivery", color: "#6d5dfc" },
+  { name: "Stakeholder Management", category: "Leadership & Delivery", color: "#8a55d9" },
+  { name: "SQL", category: "Data & Analytics", color: "#0f9f84" },
+  { name: "Power BI", category: "Data & Analytics", color: "#d99b12" },
+  { name: "Python", category: "Data & Analytics", color: "#3776ab" },
+  { name: "React", category: "Engineering", color: "#149eca" },
+  { name: "Next.js", category: "Engineering", color: "#111827" },
+  { name: "TypeScript", category: "Engineering", color: "#3178c6" },
+  { name: "MongoDB", category: "Engineering", color: "#47a248" },
+  { name: "Tailwind CSS", category: "Engineering", color: "#06b6d4" },
+  { name: "GitHub", category: "Engineering", color: "#f05032" },
+];
+
+export const defaultSkills: Skill[] = skillNames.map((skill, index) => ({
+  id: `skill-${index + 1}`,
+  ...skill,
+  level: "",
+  status: "published",
+  displayOrder: index + 1,
+  createdAt: fallbackTimestamp,
+  updatedAt: fallbackTimestamp,
+}));
+
+export const defaultPortfolioData: PortfolioData = {
+  profile: defaultProfile,
+  experiences: defaultExperiences,
+  projects: defaultProjects,
+  certifications: defaultCertifications,
+  skills: defaultSkills,
+  source: "fallback",
+};
+

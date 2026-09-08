@@ -1,0 +1,6 @@
+import { deleteSkillAction } from "@/actions/portfolio";
+import { AdminDataError, MutationStatus, PageHeader } from "@/components/admin/admin-ui";
+import { ContentList } from "@/components/admin/content-list";
+import { listContent } from "@/lib/portfolio/repository";
+import type { Skill } from "@/lib/portfolio/types";
+export default async function SkillsPage({ searchParams }: { searchParams: Promise<{ status?: string }> }) { const { status } = await searchParams; let records: Skill[] | null; try { records = await listContent<Skill>("skills", { includeDrafts: true }); } catch { records = null; } return <div className="mx-auto max-w-6xl"><PageHeader title="Skills" description="Organize your capabilities into a clear, scannable toolkit." actionHref="/admin/skills/new" actionLabel="Add skill" /><MutationStatus status={status} />{records ? <ContentList items={records.map((record) => ({ id: record.id, title: record.name, subtitle: record.category, detail: record.level, status: record.status, displayOrder: record.displayOrder, editHref: `/admin/skills/${record.id}/edit`, deleteAction: deleteSkillAction.bind(null, record.id) }))} emptyTitle="No skills yet" emptyDescription="Add a skill and group it by the way you apply it." newHref="/admin/skills/new" newLabel="Add skill" /> : <AdminDataError />}</div>; }
