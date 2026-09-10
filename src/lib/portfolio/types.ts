@@ -1,9 +1,12 @@
 export type ContentStatus = "draft" | "published";
 
-export type SkillCategory =
-  | "Leadership & Delivery"
-  | "Data & Analytics"
-  | "Engineering";
+export const SKILL_CATEGORIES = [
+  "Industry Knowledge",
+  "Tools & Technology",
+  "Interpersonal Skill",
+] as const;
+
+export type SkillCategory = (typeof SKILL_CATEGORIES)[number];
 
 export interface MediaAsset {
   url: string;
@@ -112,7 +115,17 @@ export interface PortfolioData {
   source: "mongodb" | "fallback";
 }
 
+export interface ContentOrderActionResult {
+  status: "success" | "conflict" | "error";
+  message: string;
+}
+
 export type NewContentRecord<T extends ContentRecord> = Omit<
   T,
   "id" | "createdAt" | "updatedAt"
+>;
+
+export type ContentMutationInput<T extends ContentRecord> = Omit<
+  NewContentRecord<T>,
+  "displayOrder"
 >;

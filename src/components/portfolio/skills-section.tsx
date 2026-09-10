@@ -1,8 +1,6 @@
 import { Reveal } from "@/components/portfolio/motion";
 import { SectionHeading } from "@/components/portfolio/section-heading";
-import type { Skill, SkillCategory } from "@/lib/portfolio/types";
-
-const categories: SkillCategory[] = ["Leadership & Delivery", "Data & Analytics", "Engineering"];
+import { SKILL_CATEGORIES, type Skill } from "@/lib/portfolio/types";
 
 export function SkillsSection({ skills }: { skills: Skill[] }) {
   if (!skills.length) return null;
@@ -11,7 +9,7 @@ export function SkillsSection({ skills }: { skills: Skill[] }) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal><SectionHeading eyebrow="03 / Capabilities" title="A versatile toolkit for taking ideas from ambiguity to launch." description="The mix of leadership, analysis, and engineering skills I use to create dependable outcomes." titleId="skills-title" /></Reveal>
         <div className="mt-12 grid gap-5 lg:grid-cols-3">
-          {categories.map((category, index) => {
+          {SKILL_CATEGORIES.map((category, index) => {
             const categorySkills = skills.filter((skill) => skill.category === category);
             if (!categorySkills.length) return null;
             return (

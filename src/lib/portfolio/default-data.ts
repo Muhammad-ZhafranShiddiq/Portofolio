@@ -270,18 +270,18 @@ export const defaultCertifications: Certification[] = [
 ];
 
 const skillNames: Array<Pick<Skill, "name" | "category" | "color">> = [
-  { name: "Project Management", category: "Leadership & Delivery", color: "#335cff" },
-  { name: "Agile & Scrum", category: "Leadership & Delivery", color: "#6d5dfc" },
-  { name: "Stakeholder Management", category: "Leadership & Delivery", color: "#8a55d9" },
-  { name: "SQL", category: "Data & Analytics", color: "#0f9f84" },
-  { name: "Power BI", category: "Data & Analytics", color: "#d99b12" },
-  { name: "Python", category: "Data & Analytics", color: "#3776ab" },
-  { name: "React", category: "Engineering", color: "#149eca" },
-  { name: "Next.js", category: "Engineering", color: "#111827" },
-  { name: "TypeScript", category: "Engineering", color: "#3178c6" },
-  { name: "MongoDB", category: "Engineering", color: "#47a248" },
-  { name: "Tailwind CSS", category: "Engineering", color: "#06b6d4" },
-  { name: "GitHub", category: "Engineering", color: "#f05032" },
+  { name: "Project Management", category: "Industry Knowledge", color: "#335cff" },
+  { name: "Agile & Scrum", category: "Industry Knowledge", color: "#6d5dfc" },
+  { name: "Stakeholder Management", category: "Interpersonal Skill", color: "#8a55d9" },
+  { name: "SQL", category: "Tools & Technology", color: "#0f9f84" },
+  { name: "Power BI", category: "Tools & Technology", color: "#d99b12" },
+  { name: "Python", category: "Tools & Technology", color: "#3776ab" },
+  { name: "React", category: "Tools & Technology", color: "#149eca" },
+  { name: "Next.js", category: "Tools & Technology", color: "#111827" },
+  { name: "TypeScript", category: "Tools & Technology", color: "#3178c6" },
+  { name: "MongoDB", category: "Tools & Technology", color: "#47a248" },
+  { name: "Tailwind CSS", category: "Tools & Technology", color: "#06b6d4" },
+  { name: "GitHub", category: "Tools & Technology", color: "#f05032" },
 ];
 
 export const defaultSkills: Skill[] = skillNames.map((skill, index) => ({
@@ -302,4 +302,3 @@ export const defaultPortfolioData: PortfolioData = {
   skills: defaultSkills,
   source: "fallback",
 };
-

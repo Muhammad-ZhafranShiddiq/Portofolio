@@ -2,14 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import type { z } from "zod";
+import { z } from "zod";
 
 import { assertAdmin, UnauthorizedAdminError } from "@/lib/auth/session";
 import { normalizeUploadedAsset } from "@/lib/cloudinary/server";
 import type { ActionState } from "@/lib/portfolio/action-state";
 import {
+  ContentOrderConflictError,
   createContent,
   deleteContent,
+  reorderContent,
   saveProfile,
   updateContent,
 } from "@/lib/portfolio/repository";
@@ -23,11 +25,14 @@ import {
 } from "@/lib/portfolio/schemas";
 import type {
   Certification,
+  ContentMutationInput,
+  ContentOrderActionResult,
   Experience,
-  NewContentRecord,
   Project,
   Skill,
+  SkillCategory,
 } from "@/lib/portfolio/types";
+import { SKILL_CATEGORIES } from "@/lib/portfolio/types";
 
 function validationFailure(error: z.ZodError): ActionState {
   return {
@@ -63,6 +68,130 @@ function revalidatePortfolio(adminPath: string) {
   revalidatePath(adminPath);
 }
 
+const orderedIdsSchema = z
+  .array(z.string().regex(/^[a-f\d]{24}$/i, "Invalid content ID."))
+  .max(500)
+  .superRefine((ids, context) => {
+    if (new Set(ids).size !== ids.length) {
+      context.addIssue({
+        code: "custom",
+        message: "Duplicate content IDs are not allowed.",
+      });
+    }
+  });
+
+const skillCategorySchema = z.enum(SKILL_CATEGORIES);
+
+function orderActionFailure(error: unknown): ContentOrderActionResult {
+  if (error instanceof ContentOrderConflictError) {
+    return {
+      status: "conflict",
+      message: "This list changed in another tab. It has been refreshed; reorder it again.",
+    };
+  }
+  if (error instanceof UnauthorizedAdminError) {
+    return {
+      status: "error",
+      message: "Your session is no longer authorized. Sign in again.",
+    };
+  }
+
+  console.error("Portfolio reorder failed", error);
+  return {
+    status: "error",
+    message: "The new order could not be saved. Your previous order was restored.",
+  };
+}
+
+async function reorderCollectionAction(
+  collection: "experiences" | "projects" | "certifications",
+  adminPath: string,
+  expectedIds: string[],
+  orderedIds: string[],
+): Promise<ContentOrderActionResult> {
+  try {
+    await assertAdmin();
+    const parsedExpectedIds = orderedIdsSchema.safeParse(expectedIds);
+    const parsedIds = orderedIdsSchema.safeParse(orderedIds);
+    if (!parsedExpectedIds.success || !parsedIds.success) {
+      return { status: "error", message: "The submitted order is invalid." };
+    }
+
+    await reorderContent(collection, parsedIds.data, parsedExpectedIds.data);
+    revalidatePortfolio(adminPath);
+    return { status: "success", message: "Order saved." };
+  } catch (error) {
+    return orderActionFailure(error);
+  }
+}
+
+export async function reorderExperiencesAction(
+  expectedIds: string[],
+  orderedIds: string[],
+): Promise<ContentOrderActionResult> {
+  return reorderCollectionAction(
+    "experiences",
+    "/admin/experiences",
+    expectedIds,
+    orderedIds,
+  );
+}
+
+export async function reorderProjectsAction(
+  expectedIds: string[],
+  orderedIds: string[],
+): Promise<ContentOrderActionResult> {
+  return reorderCollectionAction(
+    "projects",
+    "/admin/projects",
+    expectedIds,
+    orderedIds,
+  );
+}
+
+export async function reorderCertificationsAction(
+  expectedIds: string[],
+  orderedIds: string[],
+): Promise<ContentOrderActionResult> {
+  return reorderCollectionAction(
+    "certifications",
+    "/admin/certifications",
+    expectedIds,
+    orderedIds,
+  );
+}
+
+export async function reorderSkillsAction(
+  category: SkillCategory,
+  expectedIds: string[],
+  orderedIds: string[],
+): Promise<ContentOrderActionResult> {
+  try {
+    await assertAdmin();
+    const parsedCategory = skillCategorySchema.safeParse(category);
+    const parsedExpectedIds = orderedIdsSchema.safeParse(expectedIds);
+    const parsedIds = orderedIdsSchema.safeParse(orderedIds);
+    if (
+      !parsedCategory.success ||
+      !parsedExpectedIds.success ||
+      !parsedIds.success
+    ) {
+      return { status: "error", message: "The submitted order is invalid." };
+    }
+
+    await reorderContent(
+      "skills",
+      parsedIds.data,
+      parsedExpectedIds.data,
+      parsedCategory.data,
+    );
+    revalidatePortfolio("/admin/skills");
+    return { status: "success", message: "Order saved." };
+  } catch (error) {
+    return orderActionFailure(error);
+  }
+}
+
 export async function createExperienceAction(
   _previousState: ActionState,
   formData: FormData,
@@ -75,7 +204,7 @@ export async function createExperienceAction(
     const input = {
       ...parsed.data,
       logo: normalizeUploadedAsset(parsed.data.logo),
-    } satisfies NewContentRecord<Experience>;
+    } satisfies ContentMutationInput<Experience>;
     await createContent<Experience>("experiences", input);
     revalidatePortfolio("/admin/experiences");
   } catch (error) {
@@ -128,7 +257,7 @@ export async function createProjectAction(
     const input = {
       ...parsed.data,
       image: normalizeUploadedAsset(parsed.data.image),
-    } satisfies NewContentRecord<Project>;
+    } satisfies ContentMutationInput<Project>;
     await createContent<Project>("projects", input);
     revalidatePortfolio("/admin/projects");
   } catch (error) {
@@ -181,7 +310,7 @@ export async function createCertificationAction(
     const input = {
       ...parsed.data,
       image: normalizeUploadedAsset(parsed.data.image),
-    } satisfies NewContentRecord<Certification>;
+    } satisfies ContentMutationInput<Certification>;
     await createContent<Certification>("certifications", input);
     revalidatePortfolio("/admin/certifications");
   } catch (error) {

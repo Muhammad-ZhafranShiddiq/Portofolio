@@ -11,6 +11,8 @@
     "seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
+    "@dnd-kit/dom": "^0.5.0",
+    "@dnd-kit/react": "^0.5.0",
     "cloudinary": "^2.11.0",
     "lucide-react": "^0.525.0",
     "mongodb": "^6.21.0",

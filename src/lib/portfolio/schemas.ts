@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { SKILL_CATEGORIES } from "@/lib/portfolio/types";
+
 const trimmedText = (minimum: number, maximum: number) =>
   z.string().trim().min(minimum).max(maximum);
 
@@ -57,12 +59,11 @@ export const mediaAssetSchema = z
   })
   .strict();
 
-const orderedContentSchema = z.object({
+const publishableContentSchema = z.object({
   status: z.enum(["draft", "published"]),
-  displayOrder: z.coerce.number().int().min(0).max(10_000),
 });
 
-export const experienceInputSchema = orderedContentSchema
+export const experienceInputSchema = publishableContentSchema
   .extend({
     organization: trimmedText(2, 120),
     role: trimmedText(2, 120),
@@ -101,7 +102,7 @@ export const experienceInputSchema = orderedContentSchema
     }
   });
 
-export const projectInputSchema = orderedContentSchema
+export const projectInputSchema = publishableContentSchema
   .extend({
     title: trimmedText(2, 140),
     role: trimmedText(2, 120),
@@ -132,7 +133,7 @@ export const projectInputSchema = orderedContentSchema
     }
   });
 
-export const certificationInputSchema = orderedContentSchema
+export const certificationInputSchema = publishableContentSchema
   .extend({
     title: trimmedText(2, 180),
     issuer: trimmedText(2, 180),
@@ -161,14 +162,10 @@ export const certificationInputSchema = orderedContentSchema
     }
   });
 
-export const skillInputSchema = orderedContentSchema
+export const skillInputSchema = publishableContentSchema
   .extend({
     name: trimmedText(1, 80),
-    category: z.enum([
-      "Leadership & Delivery",
-      "Data & Analytics",
-      "Engineering",
-    ]),
+    category: z.enum(SKILL_CATEGORIES),
     level: z.string().trim().max(60),
     color: z
       .string()
@@ -277,7 +274,6 @@ export function parseExperienceForm(formData: FormData) {
     logo: mediaFromForm(formData, "logo"),
     highlights: lines(formData, "highlights"),
     status: text(formData, "status"),
-    displayOrder: text(formData, "displayOrder"),
   });
 }
 
@@ -294,7 +290,6 @@ export function parseProjectForm(formData: FormData) {
     projectState: text(formData, "projectState"),
     featured: checked(formData, "featured"),
     status: text(formData, "status"),
-    displayOrder: text(formData, "displayOrder"),
   });
 }
 
@@ -309,7 +304,6 @@ export function parseCertificationForm(formData: FormData) {
     description: text(formData, "description"),
     image: mediaFromForm(formData, "image"),
     status: text(formData, "status"),
-    displayOrder: text(formData, "displayOrder"),
   });
 }
 
@@ -320,7 +314,6 @@ export function parseSkillForm(formData: FormData) {
     level: text(formData, "level"),
     color: text(formData, "color"),
     status: text(formData, "status"),
-    displayOrder: text(formData, "displayOrder"),
   });
 }
 
@@ -363,4 +356,3 @@ export function flattenIssues(error: z.ZodError) {
   }
   return fieldErrors;
 }
-
