@@ -12,6 +12,7 @@ import {
   createContent,
   deleteContent,
   reorderContent,
+  reorderSkills,
   saveProfile,
   updateContent,
 } from "@/lib/portfolio/repository";
@@ -30,7 +31,7 @@ import type {
   Experience,
   Project,
   Skill,
-  SkillCategory,
+  SkillOrderGroup,
 } from "@/lib/portfolio/types";
 import { SKILL_CATEGORIES } from "@/lib/portfolio/types";
 
@@ -81,6 +82,35 @@ const orderedIdsSchema = z
   });
 
 const skillCategorySchema = z.enum(SKILL_CATEGORIES);
+const skillOrderGroupsSchema = z
+  .array(
+    z.object({
+      category: skillCategorySchema,
+      orderedIds: orderedIdsSchema,
+    }),
+  )
+  .length(SKILL_CATEGORIES.length)
+  .superRefine((groups, context) => {
+    const categories = new Set(groups.map((group) => group.category));
+    const ids = groups.flatMap((group) => group.orderedIds);
+
+    if (
+      categories.size !== SKILL_CATEGORIES.length ||
+      SKILL_CATEGORIES.some((category) => !categories.has(category))
+    ) {
+      context.addIssue({
+        code: "custom",
+        message: "Every skill category must be included exactly once.",
+      });
+    }
+
+    if (ids.length !== new Set(ids).size) {
+      context.addIssue({
+        code: "custom",
+        message: "A skill cannot appear in more than one category.",
+      });
+    }
+  });
 
 function orderActionFailure(error: unknown): ContentOrderActionResult {
   if (error instanceof ContentOrderConflictError) {
@@ -162,31 +192,20 @@ export async function reorderCertificationsAction(
 }
 
 export async function reorderSkillsAction(
-  category: SkillCategory,
-  expectedIds: string[],
-  orderedIds: string[],
+  expectedGroups: SkillOrderGroup[],
+  orderedGroups: SkillOrderGroup[],
 ): Promise<ContentOrderActionResult> {
   try {
     await assertAdmin();
-    const parsedCategory = skillCategorySchema.safeParse(category);
-    const parsedExpectedIds = orderedIdsSchema.safeParse(expectedIds);
-    const parsedIds = orderedIdsSchema.safeParse(orderedIds);
-    if (
-      !parsedCategory.success ||
-      !parsedExpectedIds.success ||
-      !parsedIds.success
-    ) {
+    const parsedExpectedGroups = skillOrderGroupsSchema.safeParse(expectedGroups);
+    const parsedGroups = skillOrderGroupsSchema.safeParse(orderedGroups);
+    if (!parsedExpectedGroups.success || !parsedGroups.success) {
       return { status: "error", message: "The submitted order is invalid." };
     }
 
-    await reorderContent(
-      "skills",
-      parsedIds.data,
-      parsedExpectedIds.data,
-      parsedCategory.data,
-    );
+    await reorderSkills(parsedGroups.data, parsedExpectedGroups.data);
     revalidatePortfolio("/admin/skills");
-    return { status: "success", message: "Order saved." };
+    return { status: "success", message: "Skill categories and order saved." };
   } catch (error) {
     return orderActionFailure(error);
   }

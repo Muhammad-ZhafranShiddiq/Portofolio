@@ -39,7 +39,9 @@ import type {
   Project,
   Skill,
   SkillCategory,
+  SkillOrderGroup,
 } from "@/lib/portfolio/types";
+import { SKILL_CATEGORIES } from "@/lib/portfolio/types";
 
 export type ContentCollectionName =
   | "experiences"
@@ -280,6 +282,124 @@ export async function reorderContent(
             update: { $set: { displayOrder: index + 1 } },
           },
         })),
+        { ordered: true, session },
+      );
+
+      if (result.matchedCount !== orderedIds.length) {
+        throw new ContentOrderConflictError();
+      }
+    });
+  } finally {
+    await session.endSession();
+  }
+}
+
+function skillOrderMap(groups: SkillOrderGroup[]) {
+  return new Map(groups.map((group) => [group.category, group.orderedIds]));
+}
+
+function hasValidSkillOrderGroups(groups: SkillOrderGroup[]) {
+  const categories = new Set(groups.map((group) => group.category));
+  const ids = groups.flatMap((group) => group.orderedIds);
+
+  return (
+    groups.length === SKILL_CATEGORIES.length &&
+    categories.size === SKILL_CATEGORIES.length &&
+    SKILL_CATEGORIES.every((category) => categories.has(category)) &&
+    ids.length === new Set(ids).size &&
+    ids.every(isValidContentId)
+  );
+}
+
+export async function reorderSkills(
+  orderedGroups: SkillOrderGroup[],
+  expectedGroups: SkillOrderGroup[],
+): Promise<void> {
+  if (
+    !hasValidSkillOrderGroups(orderedGroups) ||
+    !hasValidSkillOrderGroups(expectedGroups)
+  ) {
+    throw new ContentOrderConflictError();
+  }
+
+  const [client, database] = await Promise.all([
+    getMongoClient(),
+    getDatabase(),
+  ]);
+  const collection = database.collection<StoredOrderRecord>("skills");
+  const session: ClientSession = client.startSession();
+
+  try {
+    await session.withTransaction(async () => {
+      const records = await collection
+        .find(
+          {},
+          {
+            projection: {
+              _id: 1,
+              category: 1,
+              displayOrder: 1,
+              updatedAt: 1,
+            },
+            session,
+          },
+        )
+        .sort({ displayOrder: 1, updatedAt: -1, _id: 1 })
+        .toArray();
+
+      const currentGroups = new Map<SkillCategory, string[]>(
+        SKILL_CATEGORIES.map((category) => [category, []]),
+      );
+
+      for (const record of records) {
+        const group = record.category
+          ? currentGroups.get(record.category)
+          : undefined;
+        if (!group) {
+          throw new ContentOrderConflictError();
+        }
+        group.push(record._id.toHexString());
+      }
+
+      const expectedMap = skillOrderMap(expectedGroups);
+      const orderedMap = skillOrderMap(orderedGroups);
+      const currentIds = records.map((record) => record._id.toHexString());
+      const expectedIds = expectedGroups.flatMap((group) => group.orderedIds);
+      const orderedIds = orderedGroups.flatMap((group) => group.orderedIds);
+
+      if (
+        currentIds.length !== expectedIds.length ||
+        currentIds.length !== orderedIds.length ||
+        !hasExactContentIds(records, expectedIds) ||
+        !hasExactContentIds(records, orderedIds) ||
+        SKILL_CATEGORIES.some((category) => {
+          const current = currentGroups.get(category) ?? [];
+          const expected = expectedMap.get(category) ?? [];
+          return (
+            current.length !== expected.length ||
+            current.some((id, index) => id !== expected[index])
+          );
+        })
+      ) {
+        throw new ContentOrderConflictError();
+      }
+
+      if (orderedIds.length === 0) return;
+
+      const result = await collection.bulkWrite(
+        SKILL_CATEGORIES.flatMap((category) =>
+          (orderedMap.get(category) ?? []).map((id, index) => ({
+            updateOne: {
+              filter: { _id: new ObjectId(id) },
+              update: {
+                $set: {
+                  category,
+                  displayOrder: index + 1,
+                },
+              },
+            },
+          })),
+        ),
         { ordered: true, session },
       );
 

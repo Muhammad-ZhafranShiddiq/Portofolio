@@ -36,11 +36,7 @@ export function Reveal({
   return (
     <motion.div
       className={className}
-      initial={
-        shouldReduceMotion
-          ? false
-          : { opacity: 0, transform: `translateY(${distance}px)` }
-      }
+      initial={{ opacity: 0, transform: `translateY(${distance}px)` }}
       whileInView={{ opacity: 1, transform: "translateY(0px)" }}
       viewport={{ once: true, amount: 0.15, margin: "0px 0px -48px" }}
       transition={

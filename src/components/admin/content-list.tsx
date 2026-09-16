@@ -25,7 +25,7 @@ export interface ContentListItem {
   editHref: string;
 }
 
-type DeleteAction = (id: string) => Promise<void>;
+export type DeleteAction = (id: string) => Promise<void>;
 type ReorderAction = (orderedIds: string[]) => Promise<ContentOrderActionResult>;
 type SaveStatus = "idle" | "saving" | "success" | "error";
 
@@ -39,13 +39,16 @@ function moveItem<T>(items: T[], from: number, to: number) {
   return reordered;
 }
 
-function SortableContentItem({
+export function SortableContentItem({
   item,
   index,
   group,
   disabled,
   reducedMotion,
   deleteAction,
+  sortableType,
+  handleLabel,
+  handleDescription,
 }: {
   item: ContentListItem;
   index: number;
@@ -53,11 +56,16 @@ function SortableContentItem({
   disabled: boolean;
   reducedMotion: boolean;
   deleteAction: DeleteAction;
+  sortableType?: string;
+  handleLabel?: string;
+  handleDescription?: string;
 }) {
   const { ref, handleRef, isDragging, isDropTarget } = useSortable({
     id: item.id,
     index,
     group,
+    type: sortableType,
+    accept: sortableType,
     disabled,
     transition: reducedMotion
       ? null
@@ -80,8 +88,11 @@ function SortableContentItem({
           ref={handleRef}
           type="button"
           disabled={disabled}
-          aria-label={`Reorder ${item.title}`}
-          title="Drag to reorder, or press Space or Enter and use the arrow keys"
+          aria-label={handleLabel ?? `Reorder ${item.title}`}
+          title={
+            handleDescription ??
+            "Drag to reorder, or press Space or Enter and use the arrow keys"
+          }
           className="row-span-2 grid size-11 touch-none place-items-center self-center rounded-xl border border-slate-200 bg-white text-slate-500 outline-none transition hover:border-[#335cff] hover:text-[#335cff] focus-visible:ring-2 focus-visible:ring-[#335cff] focus-visible:ring-offset-2 active:cursor-grabbing disabled:cursor-wait disabled:opacity-50 motion-reduce:transition-none sm:row-span-1"
         >
           <GripVertical aria-hidden="true" className="size-5" />

@@ -120,6 +120,11 @@ export interface ContentOrderActionResult {
   message: string;
 }
 
+export interface SkillOrderGroup {
+  category: SkillCategory;
+  orderedIds: string[];
+}
+
 export type NewContentRecord<T extends ContentRecord> = Omit<
   T,
   "id" | "createdAt" | "updatedAt"
